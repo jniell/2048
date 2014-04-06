@@ -3,6 +3,7 @@ function HTMLActuator() {
   this.scoreContainer   = document.querySelector(".score-container");
   this.bestContainer    = document.querySelector(".best-container");
   this.messageContainer = document.querySelector(".game-message");
+  this.creditsContainer = document.querySelector(".credit-container");
 
   this.score = 0;
 }
@@ -23,6 +24,7 @@ HTMLActuator.prototype.actuate = function (grid, metadata) {
 
     self.updateScore(metadata.score);
     self.updateBestScore(metadata.bestScore);
+    self.updateCredits(metadata.credits);
 
     if (metadata.terminated) {
       if (metadata.over) {
@@ -118,6 +120,28 @@ HTMLActuator.prototype.updateScore = function (score) {
 
     this.scoreContainer.appendChild(addition);
   }
+};
+
+HTMLActuator.prototype.updateCredits = function (credits) {
+  this.clearContainer(this.creditsContainer);
+
+  var difference = credits - this.credits;
+  this.credits = credits;
+
+  this.scoreContainer.textContent = this.credits;
+
+  if (difference > 0) {
+    var addition = document.createElement("div");
+    addition.classList.add("credits-addition");
+    addition.textContent = "+" + difference;
+
+    this.scoreContainer.appendChild(addition);
+  }
+  else if (difference < 0) {
+  	var addition = document.createElement("div");
+  	addition.classList.add("credits-addition");
+  	addition.textContent = "-" + difference;
+  	}
 };
 
 HTMLActuator.prototype.updateBestScore = function (bestScore) {
